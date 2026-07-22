@@ -49,13 +49,13 @@ gsap.timeline()
     .from('.hero-subtitle', { duration: 1, y: 30, opacity: 0, ease: 'power3.out' }, '-=0.7')
     .from('.hero-description', { duration: 1, y: 30, opacity: 0, ease: 'power3.out' }, '-=0.7')
     .from('.hero-buttons', { duration: 1, y: 30, opacity: 0, ease: 'power3.out' }, '-=0.7')
-    .from('.floating-card', { 
-        duration: 1.5, 
-        scale: 0, 
-        rotation: 180, 
-        opacity: 0, 
+    .from('.floating-card', {
+        duration: 1.5,
+        scale: 0,
+        rotation: 180,
+        opacity: 0,
         ease: 'back.out(1.7)',
-        stagger: 0.2 
+        stagger: 0.2
     }, '-=0.5');
 
 // Floating cards continuous animation
@@ -185,34 +185,56 @@ gsap.from('.contact-form', {
 });
 
 // Form submission
-document.querySelector('.contact-form').addEventListener('submit', function(e) {
+document.querySelector('.contact-form').addEventListener('submit', function (e) {
     e.preventDefault();
-    
+
     // Get form data
     const formData = new FormData(this);
     const name = formData.get('name');
     const email = formData.get('email');
     const message = formData.get('message');
-    
+
     // Simple validation
     if (!name || !email || !message) {
         alert('Please fill in all fields');
         return;
     }
-    
+
     // Simulate form submission
     const submitBtn = this.querySelector('.btn-primary');
     const originalText = submitBtn.textContent;
-    
+
     submitBtn.textContent = 'Sending...';
     submitBtn.disabled = true;
-    
-    setTimeout(() => {
-        alert('Thank you for your message! I\'ll get back to you soon.');
-        this.reset();
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-    }, 2000);
+
+    // setTimeout(() => {
+    //     alert('Thank you for your message! I\'ll get back to you soon.');
+    //     this.reset();
+    //     submitBtn.textContent = originalText;
+    //     submitBtn.disabled = false;
+    // }, 2000);
+});
+
+const form = document.querySelector("form");
+
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+        alert("✅🎉 Message sent successfully! Thank you for contacting me.");
+        form.reset();
+    } else {
+        alert("❌⚠️ Oops! Something went wrong. Please try again.");
+    }
 });
 
 // Parallax effect for hero section
@@ -250,7 +272,7 @@ document.querySelectorAll('.btn').forEach(btn => {
             ease: 'power2.out'
         });
     });
-    
+
     btn.addEventListener('mouseleave', () => {
         gsap.to(btn, {
             scale: 1,
@@ -270,7 +292,7 @@ document.querySelectorAll('.social-link').forEach(link => {
             ease: 'power2.out'
         });
     });
-    
+
     link.addEventListener('mouseleave', () => {
         gsap.to(link, {
             scale: 1,
@@ -302,6 +324,6 @@ gsap.to('.scroll-arrow', {
     y: 20,
     ease: 'none'
 });
- const currentYear = new Date().getFullYear();
-    // Set the text of the span
-    document.getElementById("year").textContent = '@'+currentYear + ' Ganesh. Crafted with passion and code.';
+const currentYear = new Date().getFullYear();
+// Set the text of the span
+document.getElementById("year").textContent = '@' + currentYear + ' Ganesh. Crafted with passion and code.';
